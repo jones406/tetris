@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //
   function draw() {
     currentTetromino.forEach(index => {
-            squares[currentPosition + index].classList.add('tetromino');
+            squares[currentPosition + index].classList.add('tetromino')
       })
   }
 
@@ -73,12 +73,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 //we want the current tetromino to move down the grid one square every second.
-timerId = setInterval(moveDown, 1000)
+timerId = setInterval(moveDown, 500)
+
+//assign functions to keycodes, keycode.info  
+function control(e) {
+    if(e.keycode === 37) {
+        moveLeft()
+    }
+}
+
+document.addEventListener('keyup', control)
 
 //first invoke undraw, then add 10 (width = 100)to the 
 function moveDown() {
     undraw()
-    currentPosition += width;
+    currentPosition = currentPosition += width;
     draw()
     freeze()
 }
@@ -87,14 +96,26 @@ function moveDown() {
 //"some" is a js method that can check if some array items meet the condition we write. Once one true comes back, we're all set.
 function freeze() {
     if(currentTetromino.some(index => squares[currentPosition + index + width].classList.contains('taken'))) {
-        currentTetromino.forEach(index => squares[currentPosition + index].classList.add('taken'));
-        random = Math.floor(Math.random()+ theTetrominoes.length);
-        currentTetromino = theTetrominoes[random][currentRotation];
-        currentPosition = 4;
+        currentTetromino.forEach(index => squares[currentPosition + index].classList.add('taken'))
+        random = Math.floor(Math.random() * theTetrominoes.length)
+        currentTetromino = theTetrominoes[random][currentRotation]
+        currentPosition = 4
         draw()
     }
 }
 
+//moving the tetromino left
+//find the array number of all the squares on the left side: 0, 10, 20, and so on. If any square in the tetromino falls on one of those squares, we need to stop it.
+function moveLeft() {
+    undraw() //clean slate
+    const isAtLeftEdge = currentTetromino.some(index => (currentPosition + index) % width === 0) //Checks if we're at the left edge by checking is there's a remainder of 0....10/10, 20/10, etc have a remainder of 0
+    if(!isAtLeftEdge) currentPosition -=1
+    if(currentPosition.some(index => squares[currentPosition + index].classList.contains('taken'))) {
+        currentPosition +=1
+    }
+    draw()
+
+}
 
 
 });
