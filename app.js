@@ -61,14 +61,14 @@ document.addEventListener("DOMContentLoaded", () => {
   //
   function draw() {
     currentTetromino.forEach(index => {
-            squares[currentPosition + index].classList.add('tetromino')
+        squares[currentPosition + index].classList.add('tetromino')
       })
   }
 
   //remove
   function undraw() {
     currentTetromino.forEach(index => {
-            squares[currentPosition + index].classList.remove('tetromino');
+        squares[currentPosition + index].classList.remove('tetromino');
       })
   }
 
@@ -108,7 +108,8 @@ function freeze() {
 //find the array number of all the squares on the left side: 0, 10, 20, and so on. If any square in the tetromino falls on one of those squares, we need to stop it.
 function moveLeft() {
     undraw() //clean slate
-    const isAtLeftEdge = currentTetromino.some(index => (currentPosition + index) % width === 0) //Checks if we're at the left edge by checking is there's a remainder of 0....10/10, 20/10, etc have a remainder of 0
+    const isAtLeftEdge = currentTetromino.some(index => (currentPosition + index) % width === 0) 
+    //Checks if we're at the left edge by checking is there's a remainder of 0....10/10, 20/10, etc have a remainder of 0
     if(!isAtLeftEdge) currentPosition -=1
     if(currentPosition.some(index => squares[currentPosition + index].classList.contains('taken'))) {
         currentPosition +=1
